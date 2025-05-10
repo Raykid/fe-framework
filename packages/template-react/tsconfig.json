@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ES5",
-    "module": "ES6",
-    "lib": ["ES6", "DOM"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["ES2017", "DOM"],
     "removeComments": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
