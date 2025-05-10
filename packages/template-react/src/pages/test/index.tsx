@@ -7,10 +7,10 @@ export const Test: FC = () => {
   const {
     count,
     countText,
-    setCount,
-    incrementTwice,
+    increment,
+    incrementAsync,
     incrementMultiTimes,
-    // autoPlusCount,
+    autoPlusCount,
   } = takeFoo();
 
   return (
@@ -19,17 +19,17 @@ export const Test: FC = () => {
       <Space.Compact>
         <Button
           onClick={() => {
-            setCount(count + 1);
+            increment();
           }}
         >
           Increment
         </Button>
         <Button
           onClick={() => {
-            incrementTwice(1);
+            incrementAsync();
           }}
         >
-          Increment Twice
+          Increment Async
         </Button>
         <Button
           onClick={() => {
@@ -38,10 +38,10 @@ export const Test: FC = () => {
             console.timeEnd("incrementMultiTimes");
           }}
         >
-          Increment 1 1000000 times
+          Increment 1000000 times
         </Button>
       </Space.Compact>
-      {/* <div>autoPlusCount: {autoPlusCount}</div> */}
+      <div>autoPlusCount: {autoPlusCount}</div>
     </div>
   );
 };

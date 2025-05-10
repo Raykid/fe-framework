@@ -19,18 +19,26 @@ export const takeFoo = createService("foo", () => () => {
     [count, countDouble]
   );
 
-  // takeCallback async
-  const incrementTwice = takeCallback(async (num: number) => {
-    setCount((prev) => prev + num);
+  // takeCallback sync with deps
+  const increment = takeCallback(() => {
+    setCount(count + 1);
+  }, [count]);
+
+  // takeCallback async without deps
+  const incrementAsync = takeCallback(async () => {
+    setCount((prev) => prev + 1);
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    setCount((prev) => prev + num);
+    setCount((prev) => prev + 1);
   }, []);
 
-  // takeCallback sync
+  // takeCallback with parameters and return
   const incrementMultiTimes = takeCallback((times: number) => {
+    // setState will return newest state
+    let curCount = setCount((count) => count);
     for (let i = 0; i < times; i++) {
-      setCount((prev) => prev + 1);
+      curCount = setCount((prev) => prev + 1);
     }
+    return curCount;
   }, []);
 
   // takeEffect
@@ -47,13 +55,14 @@ export const takeFoo = createService("foo", () => () => {
     };
   }, []);
 
+  // Return all you wang to export
   return {
     count,
     // if you want to hide a state, just not return it
     // countDouble,
     countText,
-    setCount,
-    incrementTwice,
+    increment,
+    incrementAsync,
     incrementMultiTimes,
     autoPlusCount,
   };
