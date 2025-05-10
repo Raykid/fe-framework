@@ -9,6 +9,7 @@ const webpack = require("webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { program } = require("commander");
 
 const options = program
@@ -25,13 +26,18 @@ const ROOT_PATH = path.resolve(__dirname, "./");
 const SRC_PATH = path.resolve(ROOT_PATH, "src");
 const DIST_PATH = path.resolve(ROOT_PATH, "build");
 
-const baseConfig = {
+module.exports = {
+  // mode: "development",
+  // devtool: "source-map",
+  mode: "production",
+
   entry: {
     index: path.join(SRC_PATH, "index.tsx"),
   },
 
   output: {
     path: DIST_PATH,
+    filename: "[name].[hash:10].js",
   },
 
   resolve: {
@@ -60,58 +66,47 @@ const baseConfig = {
           },
         ],
       },
+      {
+        test: /\.css$/,
+        use: [
+          "style-loader", // 将 JS 字符串生成为 style 节点
+          "css-loader", // 将 CSS 转化成 CommonJS 模块
+        ],
+      },
+      {
+        test: /\.less$/,
+        use: [
+          "style-loader", // 将 JS 字符串生成为 style 节点
+          "css-loader", // 将 CSS 转化成 CommonJS 模块
+          "less-loader", // 将 LESS 编译为 CSS
+        ],
+      },
     ],
   },
 
   plugins: [
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      template: path.join(ROOT_PATH, "index.html"),
+      inject: true,
+    }),
     // 将 process.env 中所有环境变量迁移进来
     new webpack.DefinePlugin(
       Object.keys(process.env).reduce((env, key) => {
-        env[`process.env.${key}`] = JSON.stringify(process.env[key]);
+        const value = JSON.stringify(process.env[key]);
+        console.log(`process.env.${key} = ${value}`);
+        env[`process.env.${key}`] = value;
         return env;
       }, {})
     ),
+    ...(needReport
+      ? [
+          new BundleAnalyzerPlugin({
+            analyzerMode: "static",
+            openAnalyzer: false,
+            reportFilename: "report.esm.html",
+          }),
+        ]
+      : []),
   ],
 };
-
-module.exports = [
-  // ESM 模块
-  {
-    ...baseConfig,
-
-    mode: "development",
-    devtool: "source-map",
-
-    externals: {
-      react: "react",
-      "react-dom": "react-dom",
-      "react-redux": "react-redux",
-      redux: "redux",
-    },
-
-    experiments: {
-      outputModule: true,
-    },
-
-    output: {
-      ...baseConfig.output,
-      filename: "[name].mjs",
-      library: {
-        type: "module",
-      },
-    },
-
-    plugins: [
-      new CleanWebpackPlugin(),
-      ...(needReport
-        ? [
-            new BundleAnalyzerPlugin({
-              analyzerMode: "static",
-              openAnalyzer: false,
-              reportFilename: "report.esm.html",
-            }),
-          ]
-        : []),
-    ],
-  },
-];
