@@ -20,9 +20,10 @@
     "allowJs": true,
     "outDir": "build",
     "jsx": "react",
+    "types": ["webpack-env"],
     "baseUrl": ".",
     "paths": {
-      // "@/*": ["src/*"]
+      "@/*": ["src/*"]
     }
   },
   "include": ["src"]
