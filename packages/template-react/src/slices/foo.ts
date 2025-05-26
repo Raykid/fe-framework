@@ -1,12 +1,12 @@
 import {
-  createService,
+  createSlice,
   takeCallback,
   takeEffect,
   takeMemo,
   takeState,
 } from "raydux";
 
-export const takeFoo = createService("foo", () => () => {
+export const takeFoo = createSlice("foo", () => () => {
   // takeState
   const [count, setCount] = takeState(0);
 

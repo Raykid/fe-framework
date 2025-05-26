@@ -1,6 +1,6 @@
 import { Button, Space } from "antd";
 import React, { FC } from "react";
-import { takeFoo } from "../../services/foo";
+import { takeFoo } from "../../slices/foo";
 import "./index.less";
 
 export const Test: FC = () => {
