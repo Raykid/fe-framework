@@ -15,12 +15,10 @@
     "@ant-design/icons": "^6.0.0",
     "antd": "^5.25.1",
     "lodash-es": "^4.17.21",
-    "raydux": "^0.1.4",
+    "raydux": "^0.1.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-redux": "^9.2.0",
-    "react-router-dom": "^7.6.0",
-    "redux": "^5.0.1"
+    "react-router-dom": "^7.6.0"
   },
   "devDependencies": {
     "@gfx/zopfli": "^1.0.15",
