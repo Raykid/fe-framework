@@ -14,17 +14,20 @@ createRoot(document.getElementById("root")!).render(
   <StartUp
     dynamicallyInitialize
     development={process.env.NODE_ENV === "development"}
-    preload={
-      <div className="preload">
-        <LoadingOutlined className="preload-icon" />
-        <div className="preload-text">Loadnig...</div>
-      </div>
-    }
   >
-    <App className="antd-app">
-      <BrowserRouter>
-        <Routes />
-      </BrowserRouter>
-    </App>
+    {({ ready }) => {
+      return ready ? (
+        <App className="antd-app">
+          <BrowserRouter>
+            <Routes />
+          </BrowserRouter>
+        </App>
+      ) : (
+        <div className="preload">
+          <LoadingOutlined className="preload-icon" />
+          <div className="preload-text">Loadnig...</div>
+        </div>
+      );
+    }}
   </StartUp>
 );
